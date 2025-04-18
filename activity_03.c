@@ -18,11 +18,12 @@ void *thread_function(void *arg)
     while (1)
         sleep(1);
     return NULL;
+    signal(SIGUSR1, sigusr1_handler);
 }
 
 int main()
 {
-    signal(SIGUSR1, sigusr1_handler);
+    // signal(SIGUSR1, sigusr1_handler);
     for (int i = 0; i < NUM_THREADS; i++)
     {
         if (pthread_create(&threads[i], NULL, thread_function, NULL) != 0)
