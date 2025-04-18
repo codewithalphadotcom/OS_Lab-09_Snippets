@@ -9,8 +9,8 @@ pthread_t threads[NUM_THREADS];
 
 void sigusr1_handler(int signum)
 {
-    int i = gettid(), j = getppid(), k = getpid();
-    fprintf(stdout, "Thread %u received SIGUSR1 signal (parent=%u) \ [pid=%u] {tid=%u} \n", pthread_self(), j, k, i);
+    int i = getgid(), j = getppid(), k = getpid();
+    fprintf(stdout, "Thread %lu received SIGUSR1 signal (parent=%u) [pid=%u] {tid=%u} \n", pthread_self(), j, k, i);
 }
 
 void *thread_function(void *arg)
@@ -33,9 +33,9 @@ int main()
         }
     }
 
-    int i = gettid(), j = getpid(), k = getppid();
+    int i = getgid(), j = getpid(), k = getppid();
     fprintf(stdout, "Parent Process ID: %u, Process ID:%u, main() thread ID: %u\n", k, j, i);
-    fprintf(stdout, "Thread IDs: 0=%u, 1=%u, 2=%u and 3=%u\n", threads[0], threads[1], threads[2], threads[3]);
+    fprintf(stdout, "Thread IDs: 0=%lu, 1=%lu, 2=%lu and 3=%lu\n", threads[0], threads[1], threads[2], threads[3]);
 
     kill(j, SIGUSR1);
     pthread_kill(threads[2], SIGUSR1);
